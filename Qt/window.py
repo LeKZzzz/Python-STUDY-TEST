@@ -7,8 +7,8 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-
 from PyQt6.QtWidgets import QMainWindow
+from get_station import *
 import sys
 
 
@@ -167,4 +167,8 @@ def show_MainWindow():
 
 
 if __name__ == '__main__':
-    show_MainWindow()
+    if isStations() == False:
+        getStation()
+        show_MainWindow()
+    else:
+        show_MainWindow()
