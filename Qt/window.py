@@ -156,7 +156,6 @@ class Ui_CheckTickets(object):
     def retranslateUi(self, CheckTickets):
         _translate = QtCore.QCoreApplication.translate
         CheckTickets.setWindowTitle(_translate("CheckTickets", "CheckTickets"))
-        # self.label_img.setText(_translate("CheckTickets", "TextLabel"))
         self.label_1.setText(_translate("CheckTickets", "出发地："))
         self.label_2.setText(_translate("CheckTickets", "目的地："))
         self.label_3.setText(_translate("CheckTickets", "出发日："))
@@ -169,12 +168,13 @@ class Ui_CheckTickets(object):
         self.checkBox_K.setText(_translate("CheckTickets", "K-快速"))
 
         self.textEdit_3.setText(get_time())
-        # self.pushButton.clicked.connect(self.on_click())
+        self.pushButton.clicked.connect(self.on_click())
         # self.checkBox_G.stateChanged.connect(self.change_G(True))
         # self.checkBox_D.stateChanged.connect(self.change_D(True))
         # self.checkBox_Z.stateChanged.connect(self.change_Z(True))
         # self.checkBox_T.stateChanged.connect(self.change_T(True))
         # self.checkBox_K.stateChanged.connect(self.change_K(True))
+
 
     # 复选框事件处理
     def change_G(self, state):
@@ -227,7 +227,7 @@ class Ui_CheckTickets(object):
 
     # 显示消息提示框，参数title为提示框标题文字，message为提示信息
     def messageDialong(self, title, message):
-        msg_box = QtWidgets.QMessageBox.warning(self.centralwidget,title, message)
+        msg_box = QtWidgets.QMessageBox.warning(self.centralwidget, title, message)
         msg_box.exec()
 
     # 显示车次信息的表格
@@ -239,6 +239,7 @@ class Ui_CheckTickets(object):
                 self.model.setItem(row, column, item)
         self.tableView.setModel(self.model)
 
+
     # 查询按钮的单机事件
     def on_click(self):
         get_from = self.textEdit_1.toPlainText()
@@ -249,20 +250,20 @@ class Ui_CheckTickets(object):
             stations = eval(read())
             if get_from != "" and get_to != "" and get_date != "":
                 if get_from in stations and get_to in stations and is_vaild_date(get_date):
-                    inputYearDay = time.strptime(get_date,"%Y-%m-%d").tm_yday
-                    yearToday = time.localtime(time.time()) .tm_yday
-                    timeDifference = inputYearDay-yearToday
-                    if 0<=timeDifference<=28:
+                    inputYearDay = time.strptime(get_date, "%Y-%m-%d").tm_yday
+                    yearToday = time.localtime(time.time()).tm_yday
+                    timeDifference = inputYearDay - yearToday
+                    if 0 <= timeDifference <= 28:
                         from_station = stations[get_from]
                         to_station = stations[get_to]
-                        data = query(get_date,from_station,to_station)
+                        data = query(get_date, from_station, to_station)
                         self.checkBox_default()
-                        if len(data)!=0:
-                            self.displayTable(len(data),16,data)
+                        if len(data) != 0:
+                            self.displayTable(len(data), 16, data)
                         else:
-                            self.messageDialong('warning','没有返回的网络数据')
+                            self.messageDialong('warning', '没有返回的网络数据')
                     else:
-                        self.messageDialong('warning','超出查询日期的范围')
+                        self.messageDialong('warning', '超出查询日期的范围')
                 else:
                     self.messageDialong('warning', '输入的站名不存在或日期格式不正确')
             else:
